@@ -1,0 +1,10 @@
+version: '3'
+services:
+  backend:
+    build: ./backend
+    ports:
+     - "6001:8080"
+    volumes:
+     - ./backend:/backend
+  redis:
+    image: "redis:alpine"
