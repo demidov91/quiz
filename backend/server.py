@@ -11,6 +11,14 @@ async def hello(request):
     return web.Response(text=f"Hello, {count} world!")
 
 
+async def player(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    userVkId = request.query['auth_key']
+    await ws.send_str(f'Hello {userVkId}')
+
+
 async def create_redis_pool(app):
     app['redis'] = await aioredis.create_redis_pool(
         'redis://redis:6379',
@@ -24,7 +32,10 @@ async def close_redis_pool(app):
 
 if __name__ == '__main__':
     app = web.Application()
-    app.add_routes([web.get('/', hello)])
+    app.add_routes([
+        web.get('/', hello),
+        web.get('/player', player),
+    ])
     app.on_startup.append(create_redis_pool)
     app.on_shutdown.append(close_redis_pool)
 
