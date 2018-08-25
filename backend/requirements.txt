@@ -1,2 +1,6 @@
 aiohttp
 aioredis
+django==2.1
+django-admin-sortable
+psycopg2==2.7.5
+gunicorn
